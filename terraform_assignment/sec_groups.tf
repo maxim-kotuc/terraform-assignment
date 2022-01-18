@@ -1,3 +1,4 @@
+#SG for load balancer allowes incoming HTTP on port 80 from the internet
 resource "aws_security_group" "alb_sg" {
   name        = "alb_sg"
   description = "Allow HTTP inbound traffic"
@@ -24,6 +25,7 @@ resource "aws_security_group" "alb_sg" {
   }
 }
 
+#SG for instances allows incoming HTTP traffic on port 80 from LB SG 
 resource "aws_security_group" "instance_sg" {
   name        = "instance_sg"
   description = "Allow HTTP from ALB"

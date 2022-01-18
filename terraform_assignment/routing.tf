@@ -1,3 +1,4 @@
+#internet gw is necessary to access internet
 resource "aws_internet_gateway" "internet_gw" {
   vpc_id = aws_vpc.project.id
 
@@ -6,10 +7,13 @@ resource "aws_internet_gateway" "internet_gw" {
   }
 }
 
+#elastic ip is necessary for nat gw
 resource "aws_eip" "nat" {
   vpc = true
 }
 
+#nat gw is used as we want our instances in private subnet to be able to access the internet
+#but not to be accessible from the outside by other means than the load balancer
 resource "aws_nat_gateway" "nat_gw" {
   allocation_id = aws_eip.nat.id
   subnet_id     = aws_subnet.public.id
@@ -21,6 +25,8 @@ resource "aws_nat_gateway" "nat_gw" {
   depends_on = [aws_internet_gateway.internet_gw]
 }
 
+#two route tables for the two subnets as the logical routing is what actually
+#makes them private/public
 resource "aws_route_table" "private_rt" {
   vpc_id = aws_vpc.project.id
 

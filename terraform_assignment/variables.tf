@@ -1,3 +1,4 @@
+#Simple declaration of variables
 variable "az" {
   type = string
 }
